@@ -1,0 +1,19 @@
+app:
+  jwt:
+    # Clé secrète longue pour signer les tokens (à garder confidentielle en prod)
+    secret: "MaCleSecreteTresLongueEtComplexePourLaSignatureJWT123456789"
+    # Durée de vie du token en millisecondes (ici 24 heures)
+    expiration-ms: 86400000
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ecommerce_db
+    username: postgres
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update # Utiliser 'validate' ou migration Flyway en production
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
