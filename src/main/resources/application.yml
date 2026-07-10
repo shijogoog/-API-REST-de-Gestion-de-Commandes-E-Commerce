@@ -1,19 +1,24 @@
-app:
-  jwt:
-    # Clé secrète longue pour signer les tokens (à garder confidentielle en prod)
-    secret: "MaCleSecreteTresLongueEtComplexePourLaSignatureJWT123456789"
-    # Durée de vie du token en millisecondes (ici 24 heures)
-    expiration-ms: 86400000
-
 spring:
+  application:
+    name: e_com
   datasource:
-    url: jdbc:postgresql://localhost:5432/ecommerce_db
-    username: postgres
-    password: 1234
+    # En local ça prendra localhost:5432/ecommerce_db, en prod ça prendra l'URL injectée par Docker
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/ecommerce_db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:1234}
   jpa:
     hibernate:
-      ddl-auto: update # Utiliser 'validate' ou migration Flyway en production
-    show-sql: true
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+    show-sql: ${SPRING_SHOW_SQL:true}
     properties:
       hibernate:
         format_sql: true
+
+server:
+  port: 8080
+
+app:
+  jwt:
+    # Injection dynamique : si JWT_SECRET n'existe pas (ex: en local), il prend la clé par défaut
+    secret: ${JWT_SECRET:MaCleSecreteTresLongueEtComplexePourLaSignatureJWT123456789}
+    expiration-ms: ${JWT_EXPIRATION:86400000}
